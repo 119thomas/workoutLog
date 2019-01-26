@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_workout_name.*
 
 // import intent for our button
 import android.content.Intent
-import kotlinx.android.synthetic.main.activity_exercise_details.*
 
 class WorkoutName : AppCompatActivity() {
 
@@ -21,7 +20,7 @@ class WorkoutName : AppCompatActivity() {
 
         workoutNameNextButton.setOnClickListener {
             val intent = Intent(this, ExerciseList::class.java)
-            intent.putExtra("workoutName", workoutName.text.toString())
+            intent.putExtra("workoutName", workoutNameCell.text.toString())
             startActivityForResult(intent, REQUEST_CODE)
         }
     }
@@ -29,7 +28,7 @@ class WorkoutName : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if(requestCode == WorkoutName.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("workoutName", workoutName.text)
+            intent.putExtra("workoutName", workoutNameCell.text.toString())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

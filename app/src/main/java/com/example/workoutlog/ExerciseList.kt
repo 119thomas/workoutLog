@@ -17,7 +17,7 @@ class ExerciseList : AppCompatActivity() {
         setContentView(R.layout.activity_exercise_list)
 
         val someValue = intent.getStringExtra("workoutName")
-        workoutName.text = someValue
+        workoutNameCell.text = someValue
 
         /* get user information for a specified exercise */
         addExercise.setOnClickListener {
