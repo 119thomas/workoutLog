@@ -13,8 +13,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.workout_row.view.*
+import android.util.Log
+import android.view.TextureView
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.view.*
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
+
+    private val workouts = ArrayList<Workout>()
 
     // companion methods are essentially static variables in Java
     companion object {
@@ -35,11 +42,11 @@ class MainActivity : AppCompatActivity() {
         // layoutManager -> positions the item views inside the recyclerView
         // adapter -> creates the view holders as needed
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = MainAdapter()
+        recyclerView.adapter = MainAdapter(workouts)
     }
 
     // once we have finished collecting the workout name and exercise details,
-    // we will add to our recyclerView according if necessary
+    // we will add them to our workouts list and update the recyclerView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if(requestCode == MainActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 
@@ -50,13 +57,12 @@ class MainActivity : AppCompatActivity() {
 /**
  * manage the view holder objects and bind them to their data
  */
-class MainAdapter: RecyclerView.Adapter<CustomViewHolder>() {
+class MainAdapter(private val workouts: ArrayList<Workout>): RecyclerView.Adapter<MainAdapter.CustomViewHolder>() {
 
     // number of items in our recyclerView
     override fun getItemCount(): Int {
-        return 3
+        return workouts.size
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -65,13 +71,47 @@ class MainAdapter: RecyclerView.Adapter<CustomViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.view.workoutNameCell.text = "hahaha"
+        val workoutNames = workouts[position]
+        holder.view.workoutNameCell.text = workoutNames.getName()
+    }
+
+    /**
+     * describes an item view and metadata about its place within the RecyclerView
+     */
+    class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View) {
+            Log.d("RecyclerView", "CLICK!")
+        }
     }
 }
 
-/**
- *
- */
-class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+// a workout object is defined as having a name, amount of sets, and number of reps
+class Workout(name: String, sets: Int, reps: Int) {
+    private var name = ""
+    private var sets = 0
+    private var reps = 0
 
+    init {
+        this.name = name
+        this.sets = sets
+        this.reps = reps
+    }
+
+    fun getName(): String {
+        return name
+    }
+
+    fun getSets(): Int {
+        return sets
+    }
+
+    fun getReps(): Int {
+        return reps
+    }
 }
+
