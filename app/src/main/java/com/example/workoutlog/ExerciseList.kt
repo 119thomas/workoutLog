@@ -8,6 +8,10 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_exercise_list.*
 
 class ExerciseList : AppCompatActivity() {
+    private var exerciseName: String = ""
+    private var exerciseSets: Int = 0
+    private var exerciseReps: Int = 0
+
     companion object {
         const val REQUEST_CODE = 2
     }
@@ -27,8 +31,8 @@ class ExerciseList : AppCompatActivity() {
 
         addWorkout.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("workoutName", exerciseName)
             setResult(Activity.RESULT_OK, intent)
-            // intent.extra here
             finish()
         }
     }
@@ -41,18 +45,18 @@ class ExerciseList : AppCompatActivity() {
         /* if our request code matches the one returned and the activity was successful,
            we will then add a new exercise to our layout; i.e. our workout */
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val name: String = data.getStringExtra("exerciseNameText")
-            val sets: String = data.getStringExtra("setsText")
-            val reps: String = data.getStringExtra("repsText")
+            exerciseName = data.getStringExtra("exerciseNameText")
+            exerciseSets = data.getIntExtra("setsText", 0)
+            exerciseReps = data.getIntExtra("repsText", 0)
 
             val newTextViewA = TextView(this)
             newTextViewA.textSize = 18f
-            newTextViewA.text = "$name"
+            newTextViewA.text = "$exerciseName"
             workoutLayout.addView(newTextViewA)
 
             val newTextViewB = TextView(this)
             newTextViewB.textSize = 12f
-            newTextViewB.text = "$sets x $reps\n"
+            newTextViewB.text = "$exerciseSets x $exerciseReps\n"
             workoutLayout.addView((newTextViewB))
         }
     }

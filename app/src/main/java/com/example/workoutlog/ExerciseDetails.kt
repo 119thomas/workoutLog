@@ -16,8 +16,8 @@ class ExerciseDetails : AppCompatActivity() {
         addExerciseButton.setOnClickListener {
             val intent = Intent(this, ExerciseList::class.java)
             intent.putExtra("exerciseNameText", exerciseNameText.text.toString())
-            intent.putExtra("repsText", repsText.text.toString())
-            intent.putExtra("setsText", setsText.text.toString())
+            intent.putExtra("repsText", repsText.text.toString().toInt())
+            intent.putExtra("setsText", setsText.text.toString().toInt())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

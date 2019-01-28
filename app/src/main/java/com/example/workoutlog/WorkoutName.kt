@@ -29,6 +29,8 @@ class WorkoutName : AppCompatActivity() {
         if(requestCode == WorkoutName.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("workoutName", workoutNameCell.text.toString())
+            intent.putExtra("sets", data.getIntExtra("setsText", 0))
+            intent.putExtra("reps", data.getIntExtra("repsText", 0))
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
